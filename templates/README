@@ -1,0 +1,46 @@
+=============================
+NGINX:
+=============================
+The nginx config file in this directory should work for most basic setups.
+Do not edit it unless you know what you are doing.  If you do edit it, you
+will need to issue nginx a reload command like so:
+
+sudo /etc/init.d/nginx reload
+
+=============================
+uWSGI:
+=============================
+You can specify which version of python you're using in the nginx config file
+by replacing {{uwsgi_version}} with the respective version of python you need.
+Currently we support uwsgi25 and uwsgi27 with uwsgi32 planned for the future.
+uWSGI should automatically reload when it detects changes in the project repo.
+If it does not reload, you can restart it manually by typing:
+
+sudo supervisorctl restart {{uwsgi_version}}
+
+=============================
+The Virtual Environment:
+=============================
+The virtualenv has been created in the 'env' folder with python{{py_version}}.
+If you need a different version of python, feel free to remove it and re-create
+it.  The following command should work nicely:
+
+rm -rf env
+virtualenv --distribute --no-site-packages --python=python2.x env
+
+You can source into your virtualenv with the following command:
+
+source env/bin/activate
+
+Once you're sourced into the virtualenv, any command you use will look first
+in the env/bin folder for the binary.  pip will also install into the virtualenv
+directly instead of installing packages system-wide.  DO NOT RUN PIP IF YOU ARE
+NOT SOURCED INTO A VIRTUALENV.
+
+=============================
+The Project:
+=============================
+Please place your project directly inside the env directory, like so:
+
+cd env
+hg clone http://source.{{project}}.bixly.com {{project}}

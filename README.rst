@@ -16,7 +16,7 @@ How to get this up and running:
 
 4. Run tinbox!::
 
-   cd tinbox
-   fab -u <user> -H <server_name> create_nginx_project:project=foo,domain=foo.example.com
+    cd tinbox
+    fab -u <user> -H <server_name> create_nginx_project:project=foo,domain=foo.example.com
 
 Have Fun!

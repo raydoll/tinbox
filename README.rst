@@ -6,15 +6,15 @@ How to get this up and running:
     cd tinbox-env
     source bin/activate
 
-2. Clone the git repo into the virtualenv
+2. Clone the git repo into the virtualenv::
 
-    `git clone git@github.com:ryanshow/tinbox.git tinbox`
+    git clone git@github.com:ryanshow/tinbox.git tinbox
 
-3. Install the requirements
+3. Install the requirements::
 
-    `pip install -r tinbox/requirements.txt`
+    pip install -r tinbox/requirements.txt
 
-4. Run tinbox!
+4. Run tinbox!::
 
-   `cd tinbox`
-   `fab -u <user> -H <server_name> create_nginx_project:project=foo,domain=foo.example.com`
+   cd tinbox
+   fab -u <user> -H <server_name> create_nginx_project:project=foo,domain=foo.example.com

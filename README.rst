@@ -1,10 +1,10 @@
 How to get this up and running:
 
-1. Create a virtualenvironment and source into it
+1. Create a virtualenvironment and source into it::
 
-    `virtualenv --distribute --no-site-packages --python=python2.7 tinbox-env`
-    `cd tinbox-env`
-    `source bin/activate`
+    virtualenv --distribute --no-site-packages --python=python2.7 tinbox-env
+    cd tinbox-env
+    source bin/activate
 
 2. Clone the git repo into the virtualenv
 

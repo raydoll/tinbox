@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from fabric.api import cd, run, settings, sudo, task
 from fabric.colors import red, green
 from fabric.contrib.files import exists, upload_template
 from fabric.operations import prompt
+
 
 @task
 def create_nginx_project(project, domain, py_version='2.7'):
@@ -24,6 +27,9 @@ def create_nginx_project(project, domain, py_version='2.7'):
     # Create the group for this project if it does not exist
     sudo("groupadd -f {project}".format(project=project))
 
+    # Add the uwsgi user to this project's group so it can read what it needs to read
+    sudo("usermod -a -G {project} uwsgi{py_version}".format(project=project, py_version=py_version.replace(".", "")))
+
     # Create the directory, chmod it
     with cd("/opt/webapps"):
         sudo("mkdir -p {domain}/static".format(domain=domain))
@@ -35,7 +41,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
         'project': project,
         'domain': domain,
         'ip_address': run("hostname -i"),
-        'uwsgi_version': "uwsgi27"}
+        'uwsgi_version': "uwsgi{}".format(py_version.replace('.', ''))}
 
     # Upload the uwsgi config template
     upload_template(
@@ -50,7 +56,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
     # Upload the nginx project template
     upload_template(
         "project-nginx.conf",
-        "/opt/webapps/{domain}/{domain}-nginx.conf".format(domain=domain),
+        "/opt/webapps/{domain}/{domain}.nginx".format(domain=domain),
         context=cxt,
         use_jinja=True,
         template_dir="templates",
@@ -71,7 +77,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
     sudo("chown -R root:{project} /opt/webapps/{domain}".format(project=project, domain=domain))
 
     # Create a sym-link from the nginx config to sites-enabled
-    sudo("ln -sf /opt/webapps/{domain}/{domain}-nginx.conf /etc/nginx/sites-enabled/".format(domain=domain))
+    sudo("ln -sf /opt/webapps/{domain}/{domain}.nginx /etc/nginx/sites-enabled/{domain}".format(domain=domain))
 
     # Check nginx to make sure the config we just sym-linked is valid.. if it's not, remove the link
     with settings(warn_only=True):

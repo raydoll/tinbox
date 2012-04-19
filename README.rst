@@ -19,3 +19,4 @@ How to get this up and running:
    cd tinbox
    fab -u <user> -H <server_name> create_nginx_project:project=foo,domain=foo.example.com
 
+Have Fun!

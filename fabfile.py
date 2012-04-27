@@ -84,7 +84,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
         nginx_status = sudo("nginx -t")
         if not nginx_status.succeeded and not nginx_broken:
             print red("Your NGINX config file is BAD!  I'm going to remove the sym-link so we don't break the server.")
-            sudo("rm /etc/nginx/sites-enabled/{domain}-nginx.conf".format(domain=domain))
+            sudo("rm /etc/nginx/sites-enabled/{domain}".format(domain=domain))
 
     # Reload nginx so the config changes take effect
     sudo("/etc/init.d/nginx reload")

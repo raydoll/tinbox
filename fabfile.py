@@ -41,7 +41,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
         'project': project,
         'domain': domain,
         'ip_address': run("hostname -i"),
-        'uwsgi_version': "uwsgi{}".format(py_version.replace('.', ''))}
+        'uwsgi_version': "uwsgi{0}".format(py_version.replace('.', ''))}
 
     # Upload the uwsgi config template
     upload_template(

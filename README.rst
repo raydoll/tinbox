@@ -8,7 +8,7 @@ How to get this up and running:
 
 2. Clone the git repo into the virtualenv::
 
-    git clone git@github.com:ryanshow/tinbox.git tinbox
+    git clone http://github.com/ryanshow/tinbox.git tinbox
 
 3. Install the requirements::
 

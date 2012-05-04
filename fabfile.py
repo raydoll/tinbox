@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from fabric.api import cd, run, settings, sudo, task
+from fabric.api import cd, run, settings, sudo, task, env, put
 from fabric.colors import red, green
 from fabric.contrib.files import exists, upload_template
 from fabric.operations import prompt
+
+env.roledefs = {
+    'test_sites': ['173.255.254.234', '50.116.6.38'],
+    'training':   ['50.116.4.76']
+}
 
 
 @task
@@ -88,3 +93,21 @@ def create_nginx_project(project, domain, py_version='2.7'):
 
     # Reload nginx so the config changes take effect
     sudo("/etc/init.d/nginx reload")
+
+
+@task
+def deploy_scripts():
+    put("restart_server/restart_server.c", "/var/tmp")
+    put("restart_server/restart_server.py", "/usr/local/bin", use_sudo=True)
+
+    with cd("/var/tmp"):
+        sudo("gcc -o restart_server restart_server.c")
+        sudo("mv ./restart_server /usr/local/bin/")
+
+    sudo("groupadd -f dev")
+
+    sudo("chown root:root /usr/local/bin/restart_server.py")
+    sudo("chown root:dev  /usr/local/bin/restart_server")
+
+    sudo("chmod 0700 /usr/local/bin/restart_server.py")
+    sudo("chmod 4750 /usr/local/bin/restart_server")

@@ -97,6 +97,8 @@ def create_nginx_project(project, domain, py_version='2.7'):
 
 @task
 def deploy_scripts():
+    sudo("pip install fabric==1.4.1")
+
     put("restart_server/restart_server.c", "/var/tmp")
     put("restart_server/restart_server.py", "/usr/local/bin", use_sudo=True)
 

@@ -6,8 +6,8 @@ from fabric.contrib.files import exists, upload_template
 from fabric.operations import prompt
 
 env.roledefs = {
-    'test_sites': ['173.255.254.234', '50.116.6.38'],
-    'training':   ['50.116.4.76']
+    'test_sites': ['173.255.254.234:2200', '50.116.6.38:2200'],
+    'training':   ['50.116.4.76:2200']
 }
 
 

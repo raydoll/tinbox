@@ -38,8 +38,10 @@ def create_nginx_project(project, domain, py_version='2.7'):
     # Create the directory, chmod it
     with cd("/opt/webapps"):
         sudo("mkdir -p {domain}/static".format(domain=domain))
+
+    with cd("/opt/webapps/{domain}".format(domain=domain)):
         sudo("virtualenv --distribute --no-site-packages --python=python{py_version} env".format(py_version=py_version))
-        sudo("chmod -R 2770 ./{domain}".format(domain=domain))
+        sudo("chmod -R 2770 ./")
 
     cxt = {
         'py_version': py_version,

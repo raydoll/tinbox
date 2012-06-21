@@ -1,13 +1,23 @@
-=============================
+{% if nginx %}=============================
 NGINX:
 =============================
 The nginx config file in this directory should work for most basic setups.
 Do not edit it unless you know what you are doing.  If you do edit it, you
 will need to issue nginx a reload command like so:
 
-sudo /etc/init.d/nginx reload
+restart_server nginx
 
-=============================
+{% endif %}{% if apache %}
+============================
+Apache:
+============================
+The apache config file in this directory should work for most basic setups.
+Do not edit it unless you know what you are doing.  If you do edit it, you
+will need to issue apache a reload command like so:
+
+restart_server apache
+
+{% endif %}{% if uwsgi_version %}=============================
 uWSGI:
 =============================
 You can specify which version of python you're using in the nginx config file
@@ -16,9 +26,9 @@ Currently we support uwsgi25 and uwsgi27 with uwsgi32 planned for the future.
 uWSGI should automatically reload when it detects changes in the project repo.
 If it does not reload, you can restart it manually by typing:
 
-sudo supervisorctl restart {{uwsgi_version}}
+restart_server {{uwsgi_version}}
 
-=============================
+{% endif %}=============================
 The Virtual Environment:
 =============================
 The virtualenv has been created in the 'env' folder with python{{py_version}}.

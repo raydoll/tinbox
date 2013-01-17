@@ -117,7 +117,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
     sudo("groupadd -f {project}".format(project=project))
 
     # Add the uwsgi user to this project's group so it can read what it needs to read
-    sudo("usermod -a -G {project} uwsgi{py_version}".format(project=project, py_version=py_version.replace(".", "")))
+    sudo("usermod -a -G {project} uwsgi".format(project=project.replace(".", "")))
 
     # Create the directory, chmod it
     with cd("/opt/webapps"):

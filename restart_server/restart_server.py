@@ -4,6 +4,9 @@ import sys
 
 from fabric.api import local
 
+def restart_rabbitmq
+    local("rabbitmqctl status")
+    
 
 def restart_nginx():
     local("nginx -t")

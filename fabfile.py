@@ -36,8 +36,8 @@ def create_apache_project(project, domain, py_version='2.7'):
     sudo("usermod -a -G {project} www-data".format(project=project))
 
     # Create the directory, chmod it
-    with cd("/opt/webapps"):
-        sudo("mkdir -p {domain}/static".format(domain=domain))
+  #  with cd("/opt/webapps"):
+   #     sudo("mkdir -p {domain}/static".format(domain=domain))
 
     with cd("/opt/webapps/{domain}".format(domain=domain)):
         sudo("virtualenv --distribute --no-site-packages --python=python{py_version} env".format(py_version=py_version))
@@ -56,12 +56,12 @@ def create_apache_project(project, domain, py_version='2.7'):
         use_jinja=True,
         template_dir="templates",
         use_sudo=True,
-        mode=770)
+        mode=2770)
 
     # Upload the apache project template
     upload_template(
-        "project-apache.conf",
-        "/opt/webapps/{domain}/{domain}.apache".format(domain=domain),
+        "project.apache",
+        "/opt/webapps/{domain}/{project}.apache".format(project=project),
         context=cxt,
         use_jinja=True,
         template_dir="templates",
@@ -80,6 +80,9 @@ def create_apache_project(project, domain, py_version='2.7'):
 
     # Chown everything in the directory to root:{project}
     sudo("chown -R root:{project} /opt/webapps/{domain}".format(project=project, domain=domain))
+
+    # Fix up permissions
+    sudo("chmod -R 2770 /opt/webapps/{domain}".format(domain=domain))
 
     # Create a sym-link from the apache config to sites-enabled
     sudo("ln -sf /opt/webapps/{domain}/{domain}.apache /etc/apache2/sites-enabled/{domain}".format(domain=domain))
@@ -119,6 +122,9 @@ def create_nginx_project(project, domain, py_version='2.7'):
     # Add the uwsgi user to this project's group so it can read what it needs to read
     sudo("usermod -a -G {project} uwsgi".format(project=project.replace(".", "")))
 
+    # Add the nginx user to this projects group so it can read what it needs to read.
+    sudo("usermod -a -G {project} www-data".format(project=project.replace(".","")))
+
     # Create the directory, chmod it
     with cd("/opt/webapps"):
         sudo("mkdir -p {domain}/static".format(domain=domain))
@@ -142,7 +148,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
         use_jinja=True,
         template_dir="templates",
         use_sudo=True,
-        mode=770)
+        mode=2770)
 
     # Upload the nginx project template
     upload_template(
@@ -166,6 +172,9 @@ def create_nginx_project(project, domain, py_version='2.7'):
 
     # Chown everything in the directory to root:{project}
     sudo("chown -R root:{project} /opt/webapps/{domain}".format(project=project, domain=domain))
+
+    # Fix up permissions
+    sudo("chmod -R 2770 /opt/webapps/{domain}".format(domain=domain))
 
     # Create a sym-link from the nginx config to sites-enabled
     sudo("ln -sf /opt/webapps/{domain}/{domain}.nginx /etc/nginx/sites-enabled/{domain}".format(domain=domain))

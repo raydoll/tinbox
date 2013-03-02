@@ -36,8 +36,8 @@ def create_apache_project(project, domain, py_version='2.7'):
     sudo("usermod -a -G {project} www-data".format(project=project))
 
     # Create the directory, chmod it
-  #  with cd("/opt/webapps"):
-   #     sudo("mkdir -p {domain}/static".format(domain=domain))
+    with cd("/opt/webapps"):
+        sudo("mkdir -p {domain}".format(domain=domain))
 
     with cd("/opt/webapps/{domain}".format(domain=domain)):
         sudo("virtualenv --distribute --no-site-packages --python=python{py_version} env".format(py_version=py_version))
@@ -61,7 +61,7 @@ def create_apache_project(project, domain, py_version='2.7'):
     # Upload the apache project template
     upload_template(
         "project.apache",
-        "/opt/webapps/{domain}/{project}.apache".format(project=project),
+        "/opt/webapps/{domain}/{project}.apache".format(domain=domain, project=project),
         context=cxt,
         use_jinja=True,
         template_dir="templates",
@@ -127,7 +127,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
 
     # Create the directory, chmod it
     with cd("/opt/webapps"):
-        sudo("mkdir -p {domain}/static".format(domain=domain))
+        sudo("mkdir -p {domain}".format(domain=domain))
 
     with cd("/opt/webapps/{domain}".format(domain=domain)):
         sudo("virtualenv --distribute --no-site-packages --python=python{py_version} env".format(py_version=py_version))
@@ -152,8 +152,8 @@ def create_nginx_project(project, domain, py_version='2.7'):
 
     # Upload the nginx project template
     upload_template(
-        "project-nginx.conf",
-        "/opt/webapps/{domain}/{domain}.nginx".format(domain=domain),
+        "project.nginx",
+        "/opt/webapps/{domain}/{project}.nginx".format(domain=domain, project=project),
         context=cxt,
         use_jinja=True,
         template_dir="templates",
@@ -177,7 +177,7 @@ def create_nginx_project(project, domain, py_version='2.7'):
     sudo("chmod -R 2770 /opt/webapps/{domain}".format(domain=domain))
 
     # Create a sym-link from the nginx config to sites-enabled
-    sudo("ln -sf /opt/webapps/{domain}/{domain}.nginx /etc/nginx/sites-enabled/{domain}".format(domain=domain))
+    sudo("ln -sf /opt/webapps/{domain}/{project}.nginx /etc/nginx/sites-enabled/{domain}".format(domain=domain, project=project))
 
     # Check nginx to make sure the config we just sym-linked is valid.. if it's not, remove the link
     with settings(warn_only=True):

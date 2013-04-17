@@ -85,7 +85,7 @@ def create_apache_project(project, domain, py_version='2.7'):
     sudo("chmod -R 2770 /opt/webapps/{domain}".format(domain=domain))
 
     # Create a sym-link from the apache config to sites-enabled
-    sudo("ln -sf /opt/webapps/{domain}/{domain}.apache /etc/apache2/sites-enabled/{domain}".format(domain=domain))
+    sudo("ln -sf /opt/webapps/{domain}/{project}.apache /etc/apache2/sites-enabled/{domain}".format(domain=domain, project=project))
 
     # Check apache to make sure the config we just sym-linked is valid.. if it's not, remove the link
     with settings(warn_only=True):

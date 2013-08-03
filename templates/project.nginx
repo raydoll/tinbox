@@ -29,6 +29,10 @@ server {
   ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP:!kEDH;
   ssl_prefer_server_ciphers on;
 
+  if ($ssl_protocol = "") {
+  	rewrite ^   https://$server_name$request_uri? permanent;
+  }
+
   location @uwsgi {
     uwsgi_pass {{uwsgi_version}};
   }
